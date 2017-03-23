@@ -21,6 +21,7 @@ class web {
         try {
             $dsn = "{$this->dbtype}:host={$this->dbhost};dbname={$this->dbname};charset={$this->charset}";
             $this->pdo = new PDO($dsn,$this->dbuser,$this->dbpass,$this->options);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->kill_connection();
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage();
@@ -69,12 +70,13 @@ class web {
                 }
             }   
             $sql.= ")";
-            echo $sql;
-            $rh = $this->pdo->exec($sql);
-            return true;
+            if($this->pdo->exec($sql)) { return true; }
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
+            die();
         }
     }
 
@@ -92,39 +94,39 @@ class web {
                 }
             }            
             $sql.="where ".$where."";
-            echo $sql;
-            $rh = $this->pdo->exec($sql);
+            if($this->pdo->exec($sql)) { return true; }
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
+            die();
         }
     }
 
     function deleteEntry($table,$where) {
         try {
             $sql = "delete from ".$table." where ".$where."";
-            if($this->ladeni == 1) {
-                echo "<pre>".$sql."</pre>";
-            }
-            $rh = $this->pdo->exec($sql);
-            return true;
+            if($this->pdo->exec($sql)) { return true; }
         } catch (PDOException $e) {
-            print "Error!: ". $e->getMessage();
-            return false;
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
+            die();
         }
     }
 
     function deleteEntryBy($table, $nazev_sloupce, $hodnota_sloupce) {
         try {
             $sql = "delete from ".$table." where ".$nazev_sloupce."=".$hodnota_sloupce."";
-            if($this->ladeni == 1) {
-                echo $sql;
-            }
-            $rh = $this->pdo->exec($sql);
-            return true;
+            if($this->pdo->exec($sql)) {return true;}
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
+            die();
         }
     }
 
@@ -134,82 +136,28 @@ class web {
             if($this->ladeni == 1) {
                 echo $sql;
             }
-            $rh = $this->pdo->exec($sql);
-            return true;
+            if($this->pdo->exec($sql)) {return true;}
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    function deleteFile($from, $file) {
-        $delete = $from . DIRECTORY_SEPARATOR . $file;    
-        unlink($delete);
-    }
-
-    function getCount($from, $where) {
-        $row = $this->getEntry('count(id) as pocet', $from, $where);
-        return $row['pocet'];
-    }
-
-    function getCountRows($table, $where=NULL) {
-        try {
-            $sql = "select *,count(*) as count from ".$table."";
-            if($where !=NULL) {
-                $sql.= " where ".$where.""; 
-            }
-            $query = $this->pdo->query($sql);
-            $row = $query->fetch(PDO::FETCH_ASSOC);
-            return $row['count'];
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
             die();
         }
     }
 
-    function getEntries($cols, $from, $where=NULL, $orderBy=NULL, $limit=NULL, $groupBy=NULL) {
+    function deleteFile($from, $file) {
         try {
-            $sql = "select ";
-            if(is_array($cols)) {
-                $numItems = count($cols);
-                $i=0;
-                foreach($cols as $col) {
-                    if(++$i === $numItems) {
-                        $sql.= $col;
-                    }
-                    else {
-                        $sql.= $col.",";
-                    }
-                }
-            }
-            else {
-                $sql.= $cols;
-            }
-            $sql.= " from ".$from." ";
-            if($where != '') {
-                $sql.= "where ".$where." ";  
-            }    
-            if($groupBy != '') {
-                $sql.= "group by ".$groupBy." ";
-            }
-            if($orderBy != '') {
-                $sql.= "order by ".$orderBy." ";
-            }
-            if($limit != '') {
-                $sql.= "LIMIT ".$limit." ";
-            }
-            if($this->ladeni == 1) {
-                echo "<pre>".$sql."</pre>";
-            }
-            foreach($this->pdo->query($sql) as $row) { 
-                $rows[] = $row; 
-            }
+            $delete = $from . DIRECTORY_SEPARATOR . $file;    
+            if(unlink($delete)) { return true; }
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
-        } 	
-        return $rows;  
-    }  
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
+            die();
+        }
+    }
 
     function getEntry($cols, $from, $where=NULL) {
         try {
@@ -233,54 +181,55 @@ class web {
             if($where != '') {
                 $sql.= "where ".$where." ";  
             }  
-            if($this->ladeni == 1) {
-                echo "<pre>".$sql."</pre>";
-            }
             $query = $this->pdo->query($sql);
-            $row = $query->fetch(PDO::FETCH_ASSOC);
-            return $row;  
+            if($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                return $row;                  
+            }
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
+            die();
         }   
     }
 
-    function leftJoin($cols, $from, $leftJoin, $on, $where=NULL, $groupBy=NULL, $orderBy=NULL) {
-        try {
-            $sql = "SELECT ";
-            if(is_array($cols)) {
-                $numItems = count($cols);
-                $i=0;
-                foreach($cols as $col) {
-                    if(++$i === $numItems) {
-                        $sql.= $col;
-                    }
-                    else {
-                        $sql.= $col.",";
-                    }
-                }
-            }
-            else {
-                $sql.= $cols;
-            }
-            $sql.= " FROM ".$from;
-            $sql.= " LEFT JOIN ".$leftJoin;
-            $sql.= " ON ".$on;  
-            if($where != NULL) { $sql.= " WHERE ".$where; }
-            if($groupBy != NULL) { $sql.= " GROUP BY ".$groupBy; }
-            if($orderBy != NULL) { $sql.= " ORDER BY ".$orderBy; }
-            if($this->ladeni == 1) {
-                echo "<pre>".$sql."</pre>";
-            }
-            foreach($this->pdo->query($sql) as $row) { 
-                $rows[] = $row; 
-            }
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
-        }   
-        return $rows;  
-    }
+    // function leftJoin($cols, $from, $leftJoin, $on, $where=NULL, $groupBy=NULL, $orderBy=NULL) {
+    //     try {
+    //         $sql = "SELECT ";
+    //         if(is_array($cols)) {
+    //             $numItems = count($cols);
+    //             $i=0;
+    //             foreach($cols as $col) {
+    //                 if(++$i === $numItems) {
+    //                     $sql.= $col;
+    //                 }
+    //                 else {
+    //                     $sql.= $col.",";
+    //                 }
+    //             }
+    //         }
+    //         else {
+    //             $sql.= $cols;
+    //         }
+    //         $sql.= " FROM ".$from;
+    //         $sql.= " LEFT JOIN ".$leftJoin;
+    //         $sql.= " ON ".$on;  
+    //         if($where != NULL) { $sql.= " WHERE ".$where; }
+    //         if($groupBy != NULL) { $sql.= " GROUP BY ".$groupBy; }
+    //         if($orderBy != NULL) { $sql.= " ORDER BY ".$orderBy; }
+    //         if($this->ladeni == 1) {
+    //             echo "<pre>".$sql."</pre>";
+    //         }
+    //         foreach($this->pdo->query($sql) as $row) { 
+    //             $rows[] = $row; 
+    //         }
+    //     } catch (PDOException $e) {
+    //         print "Error!: " . $e->getMessage();
+    //         return false;
+    //     }   
+    //     return $rows;  
+    // }
     
     function fileUpload($where, $soubor) {
         $uploadfile = $where . basename($soubor['name']);
@@ -304,13 +253,17 @@ class web {
                 return $rows;
             }
             else {
-                $query = $this->pdo->query($sql);
-                $row = $query->fetch(PDO::FETCH_ASSOC);
-                return $row;
+                if($query = $this->pdo->query($sql)) {
+                    $row = $query->fetch(PDO::FETCH_ASSOC);
+                    return $row;
+                }
             }                
         } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            return false;
+            $err = $this->pdo->errorInfo();
+            $this->pridat_do_error_log($err);
+            $this->odeslat_error_email($err);
+            $this->redir_error_post($e->getMessage());
+            die();
         }
     }
 
@@ -342,6 +295,7 @@ class web {
             }
         }
     }
+
     function nahrat_soubor_bez_vodoznaku($cilovy_soubor, $cilova_cesta, $filename) {
         $handle = new upload($cilovy_soubor);
         if ($handle->uploaded) {
@@ -371,7 +325,6 @@ class web {
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
         $clean = strtolower(trim($clean, '-'));
         $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
-
         return $clean;
     }
 
@@ -403,7 +356,71 @@ class web {
         }
         return $obr;
     }
- 
+    
+    public function pridat_do_error_log($err) {
+        $f = str_replace("'","\'",$err[2]);
+        $pathinfo.= realpath(__FILE__);
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $s = "INSERT INTO error_log VALUES ('','".date('Y-m-d')."','".date('H:i:s')."','".$err['0']."','".$err['1']."','".$f."','".$pathinfo."','".$actual_link."')";
+        $this->pdo->exec($s);
+
+    }
+
+    public function odeslat_error_email($err) {
+        // odeslani emailu spravci
+        $from = WEB_EMAIL;
+        $to = "vaclav.svestka@mb-web.cz";
+        $subject = "Chyba na webu ".WEB_NAME;
+        $message = "Byla zaznamenána chyba v systému.";
+        $message.= "<br><br>";
+        $message.= "<strong>Hlášení:</strong><br>";
+        $message.= "Chyba ".$err[0]."<br>";
+        $message.= $err[2]."<br>";
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $message.= "LINK: ".$actual_link."<br>";
+        $this->send_email($from, $to, $subject, $message);
+    }
+
+    public function pridat_do_error_log_fatal($type, $message, $file, $line) {
+        $f = str_replace("'","\'",$message);
+        $pathinfo.= $file;
+        $s = "INSERT INTO error_log VALUES ('','".date('Y-m-d')."','".date('H:i:s')."','','','".$f."','".$pathinfo."','".$line."')";
+        $this->pdo->exec($s);
+
+    }
+
+    public function odeslat_error_email_fatal($type, $message, $file, $line) {
+        // odeslani emailu spravci
+        $from = WEB_EMAIL;
+        $to = "vaclav.svestka@mb-web.cz";
+        $subject = "Chyba na webu ".WEB_NAME;
+        $message = "Byla zaznamenána chyba v systému.";
+        $message.= "<br><br>";
+        $message.= "<strong>Hlášení:</strong><br>";
+        $message.= "Chyba ".$err[0]."<br>";
+        $message.= $err[2]."<br>";
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $message.= "LINK: ".$actual_link."<br>";
+        $this->send_email($from, $to, $subject, $message);
+    }
+
+    public function seznam_chyb() {
+        $sql = "select * from error_log order by id desc";
+        foreach($this->query($sql) as $row) {
+            $chyby[$row['id']]['date'] = $row['date'];
+            $chyby[$row['id']]['time'] = $row['time'];
+            $chyby[$row['id']]['sqlstate'] = $row['sqlstate'];
+            $chyby[$row['id']]['code'] = $row['code'];
+            $chyby[$row['id']]['message'] = $row['message'];
+            $chyby[$row['id']]['pathinfo'] = $row['pathinfo'];
+            $chyby[$row['id']]['link'] = $row['link'];
+        }
+        return $chyby;
+    }
+
+    public function redir_error_post() {
+        $this->tpl->display(ADMIN_PAGES.'error.tpl');
+    }
 }
 
 ?>

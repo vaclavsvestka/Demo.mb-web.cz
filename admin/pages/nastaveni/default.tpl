@@ -304,30 +304,28 @@
 													<a href="/admin/nastaveni/menu/edit/{$polozka.id}"><i class="fa fa-edit fa-funkce" title=""></i></a>
 													<a href="/admin/nastaveni/menu/smazat/{$polozka.id}"><i class="fa fa-trash fa-funkce" title=""></i></a>
 												</td>
-												{if is_array($polozka.8)}
-													<tr>
-														{foreach from=$polozka.8 item=polozka1}
-															<tr>
-																<td class="submenu">{$polozka1.nazev}</td>
-																<td class="text-center">{$polozka1.sort}</td>
-																<td class="text-center">{$polozka1.odkaz}</td>
-																<td class="text-center">
-																	{if $polozka1.aktivni == 1}
-																		<i class="fa fa-check fa-toggle-on" title="Aktivní"></i>
-																	{else}
-																		<i class="fa fa-close fa-toggle-off" title="Neaktivní"></i>
-																	{/if}
-																</td>
-																<td class="text-right">
-																	<a href="/admin/nastaveni/menu/edit/{$polozka1.id}"><i class="fa fa-edit fa-funkce" title=""></i></a>
-																	<a href="/admin/nastaveni/menu/smazat/{$polozka1.id}"><i class="fa fa-trash fa-funkce" title=""></i></a>
-																</td>
-															</tr>
-														{/foreach}								
-													</tr>
-												{/if}
+												<tr>
+													{foreach from=$polozka.submenu item=polozka1}
+														<tr>
+															<td class="submenu">{$polozka1.nazev}</td>
+															<td class="text-center">{$polozka1.sort}</td>
+															<td class="text-center">{$polozka1.odkaz}</td>
+															<td class="text-center">
+																{if $polozka1.aktivni == 1}
+																	<i class="fa fa-check fa-toggle-on" title="Aktivní"></i>
+																{else}
+																	<i class="fa fa-close fa-toggle-off" title="Neaktivní"></i>
+																{/if}
+															</td>
+															<td class="text-right">
+																<a href="/admin/nastaveni/menu/edit/{$polozka1.id}"><i class="fa fa-edit fa-funkce" title=""></i></a>
+																<a href="/admin/nastaveni/menu/smazat/{$polozka1.id}"><i class="fa fa-trash fa-funkce" title=""></i></a>
+															</td>
+														</tr>
+													{/foreach}								
+												</tr>
 											</tr>
-										{/foreach}		
+										{/foreach}	
 									</tbody>
 								</table>
 							</div>

@@ -1,5 +1,7 @@
 <?php  
     define('URL', 'http://demo.mb-web.cz/');
+    define('WEB_NAME', 'DEMO mb-web.cz');
+    define('WEB_EMAIL', 'no-reply@mb-web.cz');
     define('ADMIN', ROOT . 'admin/');
     define('ADMIN_PAGES', ROOT . 'admin/pages/');
     define('CONFIG', ROOT . 'config/');

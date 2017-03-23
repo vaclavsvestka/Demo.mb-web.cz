@@ -2,6 +2,7 @@
     ob_start();
     session_start();
     error_reporting(E_ERROR);
+    ini_set("display_errors", "off");
     
     define('ROOT', '/www/mb-web.cz/demo.mb-web.cz/');
 
@@ -9,7 +10,17 @@
     require_once ROOT . "config/modules.php";
     require_once ROOT . "config/admin_menu.php";
     require_once ROOT . "config/load_classes.php";
-
+    
+    register_shutdown_function("fatal_handler");
+    function fatal_handler() {
+        $web = new web;
+        $err = error_get_last();
+        if($err['type'] == 1) {
+            $web->pridat_do_error_log_fatal($err['type'], $err['message'],$err['file'],$err['line']);
+            $web->odeslat_error_email_fatal($err['type'], $err['message'],$err['file'],$err['line']);
+        }
+    }
+    
     if($_SESSION['logged'] == 1) {
         
         $logged_user = $admin->logged_user();

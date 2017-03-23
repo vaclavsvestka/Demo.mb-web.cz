@@ -17,9 +17,29 @@ class hlavni_menu {
 	}
 
 	public function view_menu() {
-		$menu = $this->web->getEntries('*', 'menu', 'parent_id = 0', 'sort asc');
-		foreach ($menu as $key => $value) {
-			$menu[$key][] = $this->web->getEntries('*', 'menu', 'parent_id = '.$value['id'], 'sort asc');
+		$sql = "select * from menu where parent_id=0 order by sort asc";
+		foreach ($this->web->query($sql) as $row) {
+			$menu[$row['id']]['id'] = $row['id'];
+			$menu[$row['id']]['parent_id'] = $row['parent_id'];
+			$menu[$row['id']]['nazev'] = $row['nazev'];
+			$menu[$row['id']]['odkaz'] = $row['odkaz'];
+			$menu[$row['id']]['clanek'] = $row['clanek'];
+			$menu[$row['id']]['sort'] = $row['sort'];
+			$menu[$row['id']]['aktivni'] = $row['aktivni'];
+			$menu[$row['id']]['datum_pridani'] = $row['datum_pridani'];
+			$menu[$row['id']]['datum_editace'] = $row['datum_editace'];
+			$sql2 = "select * from menu where parent_id=".$row['id']." order by sort asc";
+			foreach($this->web->query($sql2) as $row2) {
+				$menu[$row['id']]['submenu'][$row2['id']]['id'] = $row2['id'];
+				$menu[$row['id']]['submenu'][$row2['id']]['parent_id'] = $row2['parent_id'];
+				$menu[$row['id']]['submenu'][$row2['id']]['nazev'] = $row2['nazev'];
+				$menu[$row['id']]['submenu'][$row2['id']]['odkaz'] = $row2['odkaz'];
+				$menu[$row['id']]['submenu'][$row2['id']]['clanek'] = $row2['clanek'];
+				$menu[$row['id']]['submenu'][$row2['id']]['sort'] = $row2['sort'];
+				$menu[$row['id']]['submenu'][$row2['id']]['aktivni'] = $row2['aktivni'];
+				$menu[$row['id']]['submenu'][$row2['id']]['datum_pridani'] = $row2['datum_pridani'];
+				$menu[$row['id']]['submenu'][$row2['id']]['datum_editace'] = $row2['datum_editace'];
+			}
 		}
 		return $menu;
 	}

@@ -139,7 +139,7 @@ class clanky {
 		$sql = "select * from jazyky";
 		foreach($this->web->query($sql) as $row) {
 			$jazyk = $row['zkratka'];
-			$data = array('', $id, $jazyk, $_POST['nadpis_'.$jazyk], $_POST['anotace_'.$jazyk], $_POST['text_'.$jazyk], $_POST['description_'.$jazyk], $_POST['title_'.$jazyk] );
+			$data = array('', $id, $jazyk, $_POST['nadpis_'.$jazyk], $_POST['anotace_'.$jazyk], $_POST['text_'.$jazyk], $_POST['description_'.$jazyk], $_POST['title_'.$jazyk]);
 			$this->web->addEntry('clanky_texty', $data);
 		}
 		$this->pridat_obrazky_k_clanku($id);

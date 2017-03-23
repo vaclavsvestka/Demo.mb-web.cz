@@ -21,7 +21,12 @@ class kontakty {
 	}
 
 	public function seznam_skupin_kontaktu() {
-		return $this->web->getEntries('*', 'kontakty_skupiny');
+		$sql = "select * from kontakty_skupiny";
+		foreach($this->web->query($sql) as $row) {
+			$skupina[$row['id']]['id'] = $row['id'];
+			$skupina[$row['id']]['nazev'] = $row['nazev'];
+		}
+		return $skupina;
 	}
 
 	public function kontakt($id) {
