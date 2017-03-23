@@ -1,0 +1,58 @@
+#########################################################################################################
+# Turn the RewriteEngine on.                      														#
+#########################################################################################################
+
+RewriteEngine on
+
+#########################################################################################################
+# Add a leading www to domain if one is missing.  														#
+#########################################################################################################
+# If this rule is used, the rewriting stops here and then restarts from the beginning with the new URL 	#
+#########################################################################################################
+
+# RewriteCond %{HTTP_HOST} !^www\.
+# RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+#########################################################################################################
+# Do not process images or CSS files further      														#
+#########################################################################################################
+# No more processing occurs if this rule is successful													#
+#########################################################################################################
+
+RewriteRule \.(css|jpe?g|gif|png)$ - [L]
+
+#########################################################################################################
+# Add a trailing slash if needed                  														#
+#########################################################################################################
+# If this rule is used, the rewriting stops here and then restarts from the beginning with the new URL	#
+#########################################################################################################
+
+RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
+RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+
+RewriteCond %{THE_REQUEST} ^.*/index.php
+RewriteRule ^(?!admin/)(.*)index.php$ http://%{HTTP_HOST}/$1 [R=301,L]
+
+#########################################################################################################
+# Rewrite web pages to one master page            														#
+#########################################################################################################
+# No more processing occurs if any of these rules are successful                                  		#
+#########################################################################################################
+
+# posledni funkcni verze
+# RewriteRule ^admin/?$ /admin/index.php [L]
+# RewriteRule ^admin/([^/\.]+)/?$ /admin/index.php?m=$1 [L]
+# RewriteRule ^admin/([^/\.]+)/([^/\.]+)/?$ /admin/index.php?m=$1&p=$2 [L]
+# RewriteRule ^admin/([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ /admin/index.php?m=$1&p=$2&id=$3 [L]
+
+RewriteRule ^admin/?$ /admin/index.php [L]
+RewriteRule ^admin/([^/\.]+)/?$ /admin/index.php?p1=$1 [L]
+RewriteRule ^admin/([^/\.]+)/([^/\.]+)/?$ /admin/index.php?p1=$1&p2=$2 [L]
+RewriteRule ^admin/([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ /admin/index.php?p1=$1&p2=$2&p3=$3 [L]
+RewriteRule ^admin/([^/\.]+)/([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ /admin/index.php?p1=$1&p2=$2&p3=$3&p4=$4 [L]
+RewriteRule ^admin/([^/\.]+)/([^/\.]+)/([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ /admin/index.php?p1=$1&p2=$2&p3=$3&p4=$4&p5=$5 [L]
+
+RewriteRule ^([^/\.]+)/?$ /index.php?lang=$1 [L]
+RewriteRule ^([^/\.]+)/([^/\.]+)/?$ /index.php?lang=$1&m=$2 [L]
+RewriteRule ^([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ /index.php?lang=$1&m=$2&p=$3 [L]
+RewriteRule ^([^/\.]+)/([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ /index.php?lang=$1&m=$2&p=$3&p2=$4 [L]

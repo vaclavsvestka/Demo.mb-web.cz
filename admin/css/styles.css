@@ -1,0 +1,183 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=Exo:100,200,400);
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web&subset=latin,latin-ext);
+body {
+	background-image: url('/admin/img/bg02.png');
+	font-family: 'Exo', sans-serif;
+	font-size: 10pt;
+}
+.container { max-width: 100% }
+.margin-top-3 { margin-top: 3px; }
+.margin-top-20 { margin-top: 20px; }
+.margin-top-30 { margin-top: 30px; }
+.margin-top-50 { margin-top: 50px }
+.margin-top-120 { margin-top: 120px }
+.height-35 { height: 35px; }
+.page-header {
+	border-bottom: 0;
+}
+.glyphicon {
+	margin-right: 5px;
+	font-size: 10pt;
+}
+a.no-underline:hover {
+	text-decoration: none;
+}
+h1,h2 {
+	font-family: 'Titillium Web', sans-serif;
+    margin: 3px;
+    font-size: 20pt;
+    font-weight: 500;
+    margin-bottom: 25px;
+    position: relative;
+}
+h2 {
+	font-size: 17pt;
+	margin-bottom: 10px;
+}
+.jumbotron h1 {
+	font-size: 46px;
+}
+.container .nav {
+	margin-bottom: 20px;
+}
+.container .nav-tabs {
+	border-bottom: 1px solid #ccc;
+}
+.container .nav-tabs > li {
+	border-bottom: 1px solid #ccc;
+}
+hr {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 0;
+	border-top: 1px dotted #999;
+}
+ul.nabidka-vyrobku-inline {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;	
+}
+
+ul.nabidka-vyrobku-inline li {
+	margin: 0;
+	padding: 5px;	
+	display: inline;
+}
+
+ul.nabidka-vyrobku-vertical1,ul.nabidka-vyrobku-vertical2,ul.nabidka-vyrobku-vertical3 {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;		
+}
+ul.nabidka-vyrobku-vertical1 {
+	padding-left: 5px;
+}
+ul.nabidka-vyrobku-vertical2 {
+	padding-left: 10px;
+}
+ul.nabidka-vyrobku-vertical3 {
+	padding-left: 15px;
+}
+.odsazena5 {
+	margin-left: 5px;
+}
+.red {
+	color: 	#CA0000;
+}
+.green {
+	color: 	#128512;
+}
+.thumbnails {
+	padding: 10px;
+	margin-bottom: 25px;
+	text-align: center;
+}
+.thumbs { height: 240px; }
+.thumbnails { height: 120px; padding: 10px; margin-bottom: 25px; text-align: center; margin-top: 20px; }
+.thumbnails img { height: 130px; margin: 0 auto 0 auto; }
+.thumbnails span { margin: 0 auto 0 auto; }
+.dropzone { margin-top: 20px; }
+.fa-funkce { font-size: 17pt; margin-right: 6px; color: #468AF0 }
+.fa-status { font-size: 20pt; }
+.dropzone { margin-top: 20px; }
+.fa-funkce { font-size: 17pt; margin-right: 6px; color: #468AF0 }
+.fa-status { font-size: 20pt; }
+.badge-comments { position: relative; bottom: 3px; background-color: #FE2424; float: right; right: 17px; }
+.badge-comments-gray { position: relative; bottom: 3px; background-color: gray; float: right; right: 17px; }
+.badge-detail { position: relative; bottom: 2px; margin-left: 5px; }
+.container .jumbotron { padding: 10px;}
+.jumbotron {padding: 0; min-height: 100px}
+.jumbotron h1 { margin: 0; font-size: 25px; margin-bottom: 10px; height: 47px; padding-right: 29px }
+.jumbotron p.counter { font-size: 40pt; position: relative; text-align: right; margin-right: 20px }
+.title-page { font-size: 14pt; float: right; position: absolute; top: 14px; right: 23px; }
+.mini-table { font-size: 0.8em; }
+.table td.submenu { padding-left: 38px; }
+.seznam-alb { margin-top: 30px; }
+.album { border-radius: 5px; margin-bottom: 30px; }
+.album-title { color: #000; }
+.album-icon { font-size: 75pt; color: #cbcb56; line-height: 60px; }
+.album-functions { position: absolute; width: 20px; right: 10px; top: 20px; }
+.album-functions i { margin-bottom: 14px; }
+.album-description { padding-left: 10px; padding-right: 10px; }
+img.photo-edit { max-width: 100%; padding: 10px; border: 1px solid gray; background-color: white; border-radius: 7px; box-shadow: 3px 3px 3px gray;}
+img.thumbnail { height: 100px; }
+img.thumbnail-mrizka { height: 150px; max-width: 100%; margin: 35px 0 10px 0; padding: 5px; border: 1px solid gray; background-color: white; border-radius: 7px; box-shadow: 3px 3px 3px gray; }
+i { font-weight: normal; }
+.nav-tabs { border-bottom: 1px solid #fff; margin-bottom: 20px; }
+.nav > li > a { color: #fff; }
+.nav-tabs > li > a { color: #000; }
+.box-body li { list-style-type: none; }
+.top-right-menu { position: relative; top: -2px; left: 1px; }
+a.active { font-weight: bold;}
+.fa {}
+.table tbody > tr > td { padding: 4px; }
+.table tbody > tr > td.left-20 {padding-left: 20px;}
+.navbar-default .navbar-brand { color: #fff; }
+.table tbody > tr.line-through { text-decoration: line-through; color: #bbb;}
+.navbar-nav { float: left; color: #fff;}
+.nav { color: #fff; }
+.navbar-default .navbar-nav > li > a { color: #fff; }
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:active  { color: #fff; }
+/*.dropdown-menu { min-width: 241px; }*/
+.form-inline .form-control { width: auto; }
+.sablona { margin-bottom: 30px; padding: 10px; background: #fff; box-shadow: 3px 3px 3px grey;}
+.sablona h2 { font-size: 13pt;}
+.sablona .first { border: 1px solid black; margin: 0; padding: 0}
+.sablona .last { border: 1px solid black; margin: 0; padding: 0}
+.sablona img { width: 100%; }
+.sablona p { margin-top: 15px;}
+.sablona-header {}
+.sablona-link { float: right; position: absolute; top: 12px; right: 29px; }
+.sablona-image {}
+.table tbody > tr > td, .table thead > tr > th, .table tfoot > tr > th { padding-left: 0; padding-right: 0 }
+.table thead > tr > th, .table tbody > tr > th {padding: 0; margin: 0;}
+
+.fixed-buttons { position: fixed; bottom: 0; right: 0; width: 100%; text-align: right; margin-top: 30px; padding: 10px 20px 10px 20px; background-color: rgba(0, 0, 0, 0.3);}
+.fixed-buttons .fixed-button {}
+.nav > li > a { padding: 5px; }
+.navbar-right > li > a { padding: 15px 10px; }
+#footer { margin-top: 20px;}
+
+#poznamka {
+	padding: 20px;
+	background-color: yellow;
+	border-radius: 5px;
+	box-shadow: 3px 3px 3px gray;
+	margin-bottom: 20px;
+	height: 250px;
+	overflow: hidden;
+}
+#poznamka .pruh {
+	position: absolute;
+	bottom: 30px;
+	right: 20px;
+	text-align: right;
+	margin-top: 20px; 
+}
+#poznamka .pruh i { margin-right: 12px; }
+#poznamka .pruh a { color: #222; }
+.fa-lg {font-size: 17pt; }
+.left-offset-5 { margin-left: 5px; }
+.border-bottom { border-bottom: 1px solid lightgrey; }
+.border-top { border-top: 1px solid lightgrey; }

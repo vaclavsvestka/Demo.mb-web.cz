@@ -1,0 +1,16 @@
+/* CSS Tree menu styles */
+ol.tree { font-size: 12pt; }
+ol.tree li { position: relative; margin-left: -15px; list-style: none; }
+ol.tree li.file { margin-left: -1px !important; }
+ol.tree li.file a { background: url(/admin/img/document.png) 0 0 no-repeat; color: #fff; padding-left: 21px; text-decoration: none; display: block; }
+ol.tree li.file a[href *= '.pdf']	{ background: url(/admin/img/document.png) 0 0 no-repeat; }
+ol.tree li.file a[href *= '.html']	{ background: url(/admin/img/document.png) 0 0 no-repeat; }
+ol.tree li.file a[href $= '.css']	{ background: url(/admin/img/document.png) 0 0 no-repeat; }
+ol.tree li.file a[href $= '.js']	{ background: url(/admin/img/document.png) 0 0 no-repeat; }
+ol.tree li input { position: absolute; left: 0; margin-left: 0; opacity: 0; z-index: 2; cursor: pointer; height: 1em; width: 1em; top: 0; }
+ol.tree li input + ol {background: url(/admin/img/toggle-small-expand.png) 40px -8px no-repeat; margin: -0.938em 0 0 -44px; height: 1em; z-index: 5;}
+ol.tree li input + ol > li { display: none; margin-left: -14px !important; padding-left: 1px; }
+ol.tree li label {background: url(/admin/img/folder-horizontal.png) 15px 3px no-repeat; cursor: pointer; display: block; padding-left: 37px; }
+ol.tree li input:checked + ol {background: url(/admin/img/toggle-small.png) 40px 10px no-repeat; margin: -1.25em 0 0 -44px; padding: 1.563em 0 0 80px; height: auto; z-index: 5;}
+ol.tree li input:checked + ol > li { display: block; margin: 0 0 0.125em;  /* 2px */}
+ol.tree li input:checked + ol > li:last-child { margin: 0 0 0.063em; /* 1px */ }

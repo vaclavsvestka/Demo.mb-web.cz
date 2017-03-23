@@ -1,0 +1,14 @@
+.navbar {
+    /*background: #9ccc70;*/
+    background: #2f4050;
+}
+@media (min-width: 768px) {
+	.sidebar {
+    	/*background: #9ccc70;*/
+    	background: #2f4050;
+	}
+}
+.box.border.blue > .box-title {
+	/*background-color: #9ccc70;*/
+	background-color: #2f4050;
+}
